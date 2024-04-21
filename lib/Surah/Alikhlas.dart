@@ -84,15 +84,12 @@ class __AlikhlasState extends State<_AlikhlasState> {
     double baseWidth = 852;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
-    return Scaffold(
-  body: Stack(
-    children: [
-      SingleChildScrollView(
+     return Scaffold(
+      body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.only(top: 100 * fem), // Jarakkan konten dari header
-          decoration: BoxDecoration(
-            color: const Color(0xffffffff),
+          decoration: const BoxDecoration(
+            color: Color(0xffffffff),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -938,8 +935,8 @@ class __AlikhlasState extends State<_AlikhlasState> {
         ),
        )
       )
-      ]
-    )
-  );
+      
+    );
+  
   }
 }

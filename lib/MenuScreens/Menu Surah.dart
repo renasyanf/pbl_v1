@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pbl_v1/DarjahScreens/Darjah1-1.dart';
-// import 'package:pbl_v1/DarjahScreens/Darjah2-1.dart';
+import 'package:pbl_v1/DarjahScreens/speech.dart';
 import 'package:pbl_v1/OtherScreen/Tajwid.dart';
 import 'package:pbl_v1/ButtonWidgets/Button.dart';
 import 'package:pbl_v1/Surah/Alfalaq.dart';
@@ -144,8 +144,8 @@ class MenuSurah extends StatelessWidget {
                         ),
                         const SizedBox(width: 15),
                         SurahButton(
-                          text: 'Darjah 1',
-                          onPressed: () => _navigateToDarjah(context),
+                          text: 'Surah Al Falaq',
+                          onPressed: () => _navigateToAlFalaq(context),
                         ),
                       ],
                     ),
@@ -153,15 +153,15 @@ class MenuSurah extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        SurahButton(
-                          text: 'Surah Al Falaq',
-                          onPressed: () => _navigateToAlFalaq(context),
-                        ),
-                        const SizedBox(width: 15),
                         SurahButton(
                           text: 'Surah Al Ikhlas',
                           onPressed: () => _navigateToAlikhlas(context),
                         ),
+                        const SizedBox(width: 15),
+                        SurahButton(
+                          text: 'Tajwid',
+                          onPressed: () => _navigateToTajwid(context),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 15),
@@ -169,8 +169,8 @@ class MenuSurah extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         SurahButton(
-                          text: 'Tajwid',
-                          onPressed: () => _navigateToTajwid(context),
+                          text: 'Speech',
+                          onPressed: () => _navigateToDarjah(context),
                         ),
                       ],
                     ),
@@ -294,7 +294,7 @@ class MenuSurah extends StatelessWidget {
             child: child,
           );
         },
-        pageBuilder: (context, _, __) => const Darjah1Screen(),
+        pageBuilder: (context, _, __) =>  SpeechScreen(),
       ),
     );
   }
