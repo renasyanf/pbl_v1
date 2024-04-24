@@ -40,6 +40,7 @@ dependencies:
   path_provider: ^2.1.1
   intl: ^0.17.0
   google_speech: ^4.4.0
+  quran: ^1.2.4
 
 
   path: any
@@ -49,6 +50,7 @@ dependencies:
   highlight_text: ^1.7.0
   avatar_glow: ^3.0.1
   speech_to_text: ^6.6.0
+  flutter_tts: ^4.0.2
   translit: ^2.0.1
 dev_dependencies:
   flutter_test:
@@ -121,10 +123,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+  - family: Amiri
+    fonts:
+      - asset: Amiri-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

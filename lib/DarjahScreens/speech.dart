@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
+
 void main() {
   runApp(MyApp());
 }
@@ -27,48 +28,21 @@ class SpeechScreen extends StatefulWidget {
 }
 
 class _SpeechScreenState extends State<SpeechScreen> {
-  final Map<String, HighlightedWord> _highlights = {
-    'flutter': HighlightedWord(
-      onTap: () => print('flutter'),
-      textStyle: const TextStyle(
-        color: const Color(0xffdbea8d),
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    'voice': HighlightedWord(
-      onTap: () => print('voice'),
-      textStyle: const TextStyle(
-        color: Colors.green,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    'subscribe': HighlightedWord(
-      onTap: () => print('subscribe'),
-      textStyle: const TextStyle(
-        color: Colors.red,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    'like': HighlightedWord(
-      onTap: () => print('like'),
-      textStyle: const TextStyle(
-        color: Colors.blueAccent,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    'comment': HighlightedWord(
-      onTap: () => print('comment'),
-      textStyle: const TextStyle(
-        color: Colors.green,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-  };
-
   late stt.SpeechToText _speech;
   bool _isListening = false;
   String _text = 'Press the button and start speaking';
   double _confidence = 1.0;
+
+  final Map<String, HighlightedWord> _highlights = {
+    'flutter': HighlightedWord(
+      onTap: () => print('flutter'),
+      textStyle: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+    ),
+    'example': HighlightedWord(
+      onTap: () => print('example'),
+      textStyle: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+    ),
+  };
 
   @override
   void initState() {
@@ -80,29 +54,32 @@ class _SpeechScreenState extends State<SpeechScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-            title: Text(
-              'Confidence: ${(_confidence * 100.0).toStringAsFixed(1)}%',
-              style: TextStyle(color: Colors.black), // Mengatur warna teks menjadi hitam
-            ),
-            backgroundColor: Color(0xffdbea8d),
-          ),
+        title: Text(
+          'Confidence: ${(_confidence * 100.0).toStringAsFixed(1)}%',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.redAccent,
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: _listen,
         child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+        backgroundColor: Colors.red,
       ),
       body: SingleChildScrollView(
         reverse: true,
         child: Container(
-          padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 150.0),
+          padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 150.0),
           child: TextHighlight(
             text: _text,
             words: _highlights,
-            textStyle: const TextStyle(
-              fontSize: 32.0,
+            textStyle: TextStyle(
+              fontSize: 24.0,
               color: Colors.black,
               fontWeight: FontWeight.w400,
+              fontFamily: 'AmiriQuran', // Custom Arabic font
             ),
+            textAlign: TextAlign.right, // Right-aligned text for Arabic
           ),
         ),
       ),

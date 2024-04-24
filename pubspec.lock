@@ -219,6 +219,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_tts:
+    dependency: "direct main"
+    description:
+      name: flutter_tts
+      sha256: aed2a00c48c43af043ed81145fd8503ddd793dafa7088ab137dbef81a703e53d
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.2"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -464,6 +472,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
+  quran:
+    dependency: "direct main"
+    description:
+      name: quran
+      sha256: "76dc98eb950e2e5a400e555e8f12fec31c32eaff8bcec4a56e486b300ae9005b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.4"
   rxdart:
     dependency: transitive
     description:
