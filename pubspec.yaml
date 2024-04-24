@@ -41,6 +41,7 @@ dependencies:
   intl: ^0.17.0
   google_speech: ^4.4.0
 
+
   path: any
   just_audio: ^0.9.37
   audioplayers: ^5.2.1
@@ -48,6 +49,7 @@ dependencies:
   highlight_text: ^1.7.0
   avatar_glow: ^3.0.1
   speech_to_text: ^6.6.0
+  translit: ^2.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

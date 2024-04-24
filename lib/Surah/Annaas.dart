@@ -8,7 +8,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 
-
 class Annaas extends StatelessWidget {
   const Annaas({Key? key}) : super(key: key);
 
@@ -27,7 +26,7 @@ class __AnnaasState extends State<_AnnaasState> {
   late final AssetsAudioPlayer audioPlayer;
   late List<String> audioPaths;
   bool isPlaying = false;
-   
+
   // Function to get photos from database
   Future<List<String?>> getImagesFromDatabase(int idSurah) async {
     await DbHelper.copyDatabase('alquran1.db');
@@ -42,7 +41,7 @@ class __AnnaasState extends State<_AnnaasState> {
 
     // await database.close();
     return imageList;
-  } 
+  }
 
   @override
   void initState() {
@@ -58,9 +57,16 @@ class __AnnaasState extends State<_AnnaasState> {
     ];
 
     audioPlayer.current.listen((event) {
-      setState(() {
-        isPlaying = event != null && event.audio.assetAudioPath != null;
-      });
+      if (event != null && event.audio.assetAudioPath != null) {
+        setState(() {
+          isPlaying = true;
+        });
+      } else {
+        setState(() {
+          isPlaying = false;
+        });
+        
+      }
     });
   }
 
@@ -70,6 +76,7 @@ class __AnnaasState extends State<_AnnaasState> {
       showNotification: true,
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -1295,4 +1302,10 @@ class __AnnaasState extends State<_AnnaasState> {
     )
    );
   }
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
 }
+

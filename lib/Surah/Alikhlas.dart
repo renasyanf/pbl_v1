@@ -55,12 +55,18 @@ class __AlikhlasState extends State<_AlikhlasState> {
     ];
 
     audioPlayer.current.listen((event) {
-      setState(() {
-        isPlaying = event != null && event.audio.assetAudioPath != null;
-      });
+      if (event != null && event.audio.assetAudioPath != null) {
+        setState(() {
+          isPlaying = true;
+        });
+      } else {
+        setState(() {
+          isPlaying = false;
+        });
+        
+      }
     });
   }
-
   void playAudio(String path) async {
     await audioPlayer.open(
       Audio(path),
@@ -938,5 +944,10 @@ class __AlikhlasState extends State<_AlikhlasState> {
       
     );
   
+  }
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
   }
 }

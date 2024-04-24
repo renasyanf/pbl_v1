@@ -58,10 +58,17 @@ class __AlfatihahState extends State<_AlfatihahState> {
       'assets/audio/alfatihah/AYAT7.mp3',
     ];
 
-    audioPlayer.current.listen((event) {
-      setState(() {
-        isPlaying = event != null && event.audio.assetAudioPath != null;
-      });
+   audioPlayer.current.listen((event) {
+      if (event != null && event.audio.assetAudioPath != null) {
+        setState(() {
+          isPlaying = true;
+        });
+      } else {
+        setState(() {
+          isPlaying = false;
+        });
+        
+      }
     });
   }
 
@@ -1485,6 +1492,11 @@ class __AlfatihahState extends State<_AlfatihahState> {
   )
 )   
         );
+  }
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
   }
 
 }
