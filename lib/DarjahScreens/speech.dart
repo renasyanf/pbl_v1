@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
-
 void main() {
   runApp(MyApp());
 }
@@ -56,15 +55,15 @@ class _SpeechScreenState extends State<SpeechScreen> {
       appBar: AppBar(
         title: Text(
           'Confidence: ${(_confidence * 100.0).toStringAsFixed(1)}%',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
         ),
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Color(0xffdbea8d),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: _listen,
         child: Icon(_isListening ? Icons.mic : Icons.mic_none),
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xffdbea8d),
       ),
       body: SingleChildScrollView(
         reverse: true,
@@ -77,7 +76,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
               fontSize: 24.0,
               color: Colors.black,
               fontWeight: FontWeight.w400,
-              fontFamily: 'AmiriQuran', // Custom Arabic font
+              fontFamily: 'Amiri', // Custom Arabic font
             ),
             textAlign: TextAlign.right, // Right-aligned text for Arabic
           ),
@@ -101,6 +100,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
               _confidence = val.confidence;
             }
           }),
+          localeId: 'ar', // Set locale to Arabic
         );
       }
     } else {
