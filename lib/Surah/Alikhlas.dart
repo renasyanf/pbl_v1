@@ -110,114 +110,110 @@ class __AlikhlasState extends State<_AlikhlasState> {
     double baseWidth = 852;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
+    
      return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            color: Color(0xffffffff),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                // headerbarg8f (8:115)
-                width: double.infinity,
-                height: 100 * fem,
-                decoration: const BoxDecoration(
-                  color: Color(0xffffffff),
-                ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      // navheader1Aw (8:116)
-                      left: 29 * fem,
-                      top: 40 * fem,
-                      child: Align(
-                        child: SizedBox(
-                          width: 794 * fem,
-                          height: 52 * fem,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(11 * fem),
-                              color: const Color(0xffdbea8d),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0x0f000000),
-                                  offset: Offset(0 * fem, 2 * fem),
-                                  blurRadius: 2 * fem,
-                                ),
-                              ],
-                            ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+             automaticallyImplyLeading: false,
+             pinned: true,
+            //expandedHeight: appBarHeight,
+            flexibleSpace: Container(
+              // width: double.infinity,
+               height: 330 * fem,
+              decoration: BoxDecoration(
+                color: Color(0xffffffff),
+              ),
+              child: Stack(
+                children: [
+                  Positioned(
+                    left: 29 * fem,
+                    top: 28 * fem,
+                    child: Align(
+                      child: SizedBox(
+                        width: 794 * fem,
+                        height: 45 * fem,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(11 * fem),
+                            color: const Color(0xffdbea8d),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0x0f000000),
+                                offset: Offset(0 * fem, 2 * fem),
+                                blurRadius: 2 * fem,
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                    Positioned(
-                      // tahap1qsalfatihah1fmH (8:117)
-                      left: 85 * fem,
-                      top: 57 * fem,
-                      child: Align(
-                        child: SizedBox(
-                          width: 186 * fem,
-                          height: 20 * fem,
-                          child: Text(
-                            'Al Ikhlas',
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: 16 * ffem,
-                              fontWeight: FontWeight.w700,
-                              height: 1.1918749809 * ffem / fem,
-                              color: const Color(0xff000000),
-                            ),
+                  ),
+                  Positioned(
+                    left: 85 * fem,
+                    top: 43 * fem,
+                    child: Align(
+                      child: SizedBox(
+                        width: 186 * fem,
+                        height: 25 * fem,
+                        child: Text(
+                          'Al - Ikhlas',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16 * ffem,
+                            fontWeight: FontWeight.w700,
+                            height: 1.1918749809 * ffem / fem,
+                            color: const Color(0xff000000),
                           ),
                         ),
                       ),
                     ),
-                    Positioned(
-                      // moreZ5y (8:118)
-                      left: 801 * fem,
-                      top: 58 * fem,
-                      child: Align(
-                        child: SizedBox(
+                  ),
+                  Positioned(
+                    left: 801 * fem,
+                    top: 45 * fem,
+                    child: Align(
+                      child: SizedBox(
+                        width: 4 * fem,
+                        height: 13 * fem,
+                        child: Image.asset(
+                          'assets/page-1/images/more.png',
                           width: 4 * fem,
                           height: 16 * fem,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 47 * fem,
+                    top: 43 * fem,
+                    child: Align(
+                      child: SizedBox(
+                        width: 14 * fem,
+                        height: 14 * fem,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                          ),
                           child: Image.asset(
-                            'assets/page-1/images/more.png',
-                            width: 4 * fem,
-                            height: 16 * fem,
+                            'assets/page-1/images/back-9ks.png',
+                            width: 20 * fem,
+                            height: 20 * fem,
                           ),
                         ),
                       ),
                     ),
-                    Positioned(
-                      left: 47 * fem,
-                      top: 56 * fem,
-                      child: Align(
-                        child: SizedBox(
-                          width: 16 * fem,
-                          height: 16 * fem,
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.pop(context); // Tombol Kembali
-                            },
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                            ),
-                            child: Image.asset(
-                              'assets/page-1/images/back-9ks.png',
-                              width: 16 * fem,
-                              height: 16 * fem,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Container(
-                      // autogroupsgpzyvP (56896Yzyh1G6wME5YUsGPZ)
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              color: Color(0xffffffff),
                     padding: EdgeInsets.fromLTRB(5 * fem, 25 * fem, 16 * fem, 5 * fem),
                     width: double.infinity,
                     child: Column(
@@ -959,20 +955,15 @@ class __AlikhlasState extends State<_AlikhlasState> {
                         }
                       )
                     ),
-                  ]
-                 ),
-               ),
-              ],
-             ),
-           ),
-         ]
-        ),
-       )
-      )
-      
+                  ],
+              ),
+            ),
+        ]))),
+        ],
+      ),
     );
-  
   }
+
   @override
   void dispose() {
     audioPlayer.dispose();
