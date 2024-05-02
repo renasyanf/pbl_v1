@@ -33,7 +33,7 @@ class MenuSurah extends StatelessWidget {
                 width: double.infinity,
                 height: 100 * fem,
                 decoration: const BoxDecoration(
-                  color: Color(0xffffffff),
+                  color:Color.fromARGB(12, 255, 255, 255),
                 ),
                 child: Stack(
                   children: [

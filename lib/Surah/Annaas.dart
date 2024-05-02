@@ -112,7 +112,7 @@ class __AnnaasState extends State<_AnnaasState> {
     Future<List<String?>> imagesFromDatabase12= getImagesFromDatabase(47);
     Future<List<String?>> imagesFromDatabase13= getImagesFromDatabase(48);
 
-     double baseWidth = 852;
+    double baseWidth = 852;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
     double appBarHeight = 100 * fem; // Sesuaikan tinggi SliverAppBar sesuai kebutuhan
@@ -134,11 +134,11 @@ class __AnnaasState extends State<_AnnaasState> {
                 children: [
                   Positioned(
                     left: 29 * fem,
-                    top: 28 * fem,
+                    top: 34 * fem,
                     child: Align(
                       child: SizedBox(
                         width: 794 * fem,
-                        height: 45 * fem,
+                        height: 47 * fem,
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(11 * fem),
@@ -157,7 +157,7 @@ class __AnnaasState extends State<_AnnaasState> {
                   ),
                   Positioned(
                     left: 85 * fem,
-                    top: 43 * fem,
+                    top: 48 * fem,
                     child: Align(
                       child: SizedBox(
                         width: 186 * fem,
@@ -177,7 +177,7 @@ class __AnnaasState extends State<_AnnaasState> {
                   ),
                   Positioned(
                     left: 801 * fem,
-                    top: 45 * fem,
+                    top: 49 * fem,
                     child: Align(
                       child: SizedBox(
                         width: 4 * fem,
@@ -192,7 +192,7 @@ class __AnnaasState extends State<_AnnaasState> {
                   ),
                   Positioned(
                     left: 47 * fem,
-                    top: 43 * fem,
+                    top: 49 * fem,
                     child: Align(
                       child: SizedBox(
                         width: 14 * fem,
@@ -1127,7 +1127,7 @@ Container(
                           width: 725 * fem,
                           height: 345 * fem,
                          child: FutureBuilder<List<String?>>(
-   future: imagesFromDatabase9,// Mengambil gambar dari database
+   future: imagesFromDatabase11,// Mengambil gambar dari database
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -1153,12 +1153,12 @@ Container(
                     ),
                         Container(
                           // contentimage1NNT (20:328)
-                         margin: EdgeInsets.fromLTRB(0 * fem, 0 * fem, 28 * fem, 13 * fem),
+                         margin: EdgeInsets.fromLTRB(0 * fem, 0 * fem, 20 * fem, 13 * fem),
 
-                          width: 413 * fem,
+                         width: 315 * fem,
                           height: 70 * fem,
                           child: FutureBuilder<List<String?>>(
-   future: imagesFromDatabase10,// Mengambil gambar dari database
+   future: imagesFromDatabase12,// Mengambil gambar dari database
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -1238,7 +1238,7 @@ Container(
                                 height: double.infinity,
                                 child: GestureDetector(
                                    onTap: () {
-                                  playAudio('AYAT5.mp3');
+                                  playAudio('AYAT6.mp3');
                                 },
                                   child: Container(
                                     // audiobuttonVju (20:323)
@@ -1258,8 +1258,8 @@ Container(
                                           width: 20 * fem,
                                           height: 18 * fem,
                                           child: Image.asset(
-                                           isPlayingMap.containsKey('AYAT5.mp3') &&
-                                                  isPlayingMap['AYAT5.mp3']!
+                                           isPlayingMap.containsKey('AYAT6.mp3') &&
+                                                  isPlayingMap['AYAT6.mp3']!
                                               ? 'assets/page-1/images/soundmaxduotone.png'
                                               : 'assets/page-1/images/soundmaxduotone.png',
                                             width: 20 * fem,
@@ -1270,8 +1270,8 @@ Container(
                                         // audioKU3 (20:326)
                                         margin: EdgeInsets.fromLTRB(0 * fem, 1 * fem, 0 * fem, 0 * fem),
                                         child: Text(
-                                         isPlayingMap.containsKey('AYAT5.mp3') &&
-                                                  isPlayingMap['AYAT5.mp3']!
+                                         isPlayingMap.containsKey('AYAT6.mp3') &&
+                                                  isPlayingMap['AYAT6.mp3']!
                                               ? 'Stop'
                                               : 'Audio',
                                           style: GoogleFonts.roboto(

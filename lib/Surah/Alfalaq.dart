@@ -107,7 +107,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
     Future<List<String?>> imagesFromDatabase9 = getImagesFromDatabase(33);
     Future<List<String?>> imagesFromDatabase10 = getImagesFromDatabase(34);
 
-        double baseWidth = 852;
+    double baseWidth = 852;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
     double appBarHeight = 100 * fem; // Sesuaikan tinggi SliverAppBar sesuai kebutuhan
@@ -129,11 +129,11 @@ class __AlfalaqState extends State<_AlfalaqState> {
                 children: [
                   Positioned(
                     left: 29 * fem,
-                    top: 28 * fem,
+                    top: 34 * fem,
                     child: Align(
                       child: SizedBox(
                         width: 794 * fem,
-                        height: 45 * fem,
+                        height: 47 * fem,
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(11 * fem),
@@ -152,13 +152,13 @@ class __AlfalaqState extends State<_AlfalaqState> {
                   ),
                   Positioned(
                     left: 85 * fem,
-                    top: 43 * fem,
+                    top: 48 * fem,
                     child: Align(
                       child: SizedBox(
                         width: 186 * fem,
                         height: 25 * fem,
                         child: Text(
-                          'Al Falaq',
+                          'Al - Falaq',
                           style: TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 16 * ffem,
@@ -172,7 +172,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
                   ),
                   Positioned(
                     left: 801 * fem,
-                    top: 45 * fem,
+                    top: 49 * fem,
                     child: Align(
                       child: SizedBox(
                         width: 4 * fem,
@@ -187,7 +187,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
                   ),
                   Positioned(
                     left: 47 * fem,
-                    top: 43 * fem,
+                    top: 49 * fem,
                     child: Align(
                       child: SizedBox(
                         width: 14 * fem,

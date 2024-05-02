@@ -121,6 +121,7 @@ class __AlfatihahState extends State<_AlfatihahState> {
     double baseWidth = 852;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
+    double appBarHeight = 100 * fem; // Sesuaikan tinggi SliverAppBar sesuai kebutuhan
 
     return Scaffold(
       body: CustomScrollView(
@@ -139,11 +140,11 @@ class __AlfatihahState extends State<_AlfatihahState> {
                 children: [
                   Positioned(
                     left: 29 * fem,
-                    top: 28 * fem,
+                    top: 34 * fem,
                     child: Align(
                       child: SizedBox(
                         width: 794 * fem,
-                        height: 45 * fem,
+                        height: 47 * fem,
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(11 * fem),
@@ -162,7 +163,7 @@ class __AlfatihahState extends State<_AlfatihahState> {
                   ),
                   Positioned(
                     left: 85 * fem,
-                    top: 43 * fem,
+                    top: 48 * fem,
                     child: Align(
                       child: SizedBox(
                         width: 186 * fem,
@@ -182,7 +183,7 @@ class __AlfatihahState extends State<_AlfatihahState> {
                   ),
                   Positioned(
                     left: 801 * fem,
-                    top: 45 * fem,
+                    top: 49 * fem,
                     child: Align(
                       child: SizedBox(
                         width: 4 * fem,
@@ -197,7 +198,7 @@ class __AlfatihahState extends State<_AlfatihahState> {
                   ),
                   Positioned(
                     left: 47 * fem,
-                    top: 43 * fem,
+                    top: 49 * fem,
                     child: Align(
                       child: SizedBox(
                         width: 14 * fem,
