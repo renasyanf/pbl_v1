@@ -25,7 +25,8 @@ class _AlikhlasState extends StatefulWidget {
 class __AlikhlasState extends State<_AlikhlasState> {
   late final AssetsAudioPlayer audioPlayer;
   late List<String> audioPaths;
-  bool isPlaying = false;
+ Map<String, bool> isPlayingMap = {};
+  String? currentPlayingAudioPath;
    
   // Function to get photos from database
   Future<List<String?>> getImagesFromDatabase(int idSurah) async {
@@ -48,31 +49,50 @@ class __AlikhlasState extends State<_AlikhlasState> {
     super.initState();
     audioPlayer = AssetsAudioPlayer.newPlayer();
     audioPaths = [
-      'assets/audio/alikhlas/AYAT1.mp3',
-      'assets/audio/alikhlas/AYAT2.mp3',
-      'assets/audio/alikhlas/AYAT3.mp3',
-      'assets/audio/alikhlas/AYAT4.mp3',
+      'AYAT1.mp3',
+      'AYAT2.mp3',
+      'AYAT3.mp3',
+      'AYAT4.mp3',
     ];
-
-    audioPlayer.current.listen((event) {
+    
+     audioPlayer.current.listen((event) {
       if (event != null && event.audio.assetAudioPath != null) {
         setState(() {
-          isPlaying = true;
+          isPlayingMap[currentPlayingAudioPath!] = true;
         });
       } else {
         setState(() {
-          isPlaying = false;
+          isPlayingMap[currentPlayingAudioPath!] = false;
         });
-        
       }
     });
   }
-  void playAudio(String path) async {
-    await audioPlayer.open(
-      Audio(path),
-      showNotification: true,
-    );
+
+  void playAudio(String audioPath) {
+    if (!isPlayingMap.containsKey(audioPath) || !isPlayingMap[audioPath]!) {
+      if (currentPlayingAudioPath != null &&
+          isPlayingMap.containsKey(currentPlayingAudioPath!) &&
+          isPlayingMap[currentPlayingAudioPath!]!) {
+        stopAudio(currentPlayingAudioPath!);
+      }
+      audioPlayer.open(Audio('assets/audio/alikhlas/$audioPath'));
+      setState(() {
+        currentPlayingAudioPath = audioPath;
+        isPlayingMap[currentPlayingAudioPath!] = true;
+      });
+    } else {
+      stopAudio(audioPath);
+    }
   }
+
+  void stopAudio(String audioPath) {
+    audioPlayer.stop();
+    setState(() {
+      isPlayingMap[audioPath] = false;
+      currentPlayingAudioPath = null;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +231,7 @@ class __AlikhlasState extends State<_AlikhlasState> {
                       future: imagesFromDatabase1,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
+                          return Container();
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else {
@@ -240,7 +260,7 @@ class __AlikhlasState extends State<_AlikhlasState> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             // Jika sedang loading, tampilkan widget loading
-                            return const CircularProgressIndicator();
+                            return Container();
                           } else if (snapshot.hasError) {
                             // Jika terjadi error, tampilkan pesan error
                             return Text('Error: ${snapshot.error}');
@@ -316,13 +336,9 @@ class __AlikhlasState extends State<_AlikhlasState> {
                                 width: 139 * fem,
                                 height: double.infinity,
                                 child: GestureDetector(
-                                   onTap: () {
-                                    if (!isPlaying) {
-                                      playAudio(audioPaths[0]); // Memutar audio ayat pertama ketika tombol ditekan
-                                    } else {
-                                      audioPlayer.stop(); // Menghentikan audio ketika tombol ditekan saat sedang diputar
-                                    }
-                                  },
+                                    onTap: () {
+                                  playAudio('AYAT1.mp3');
+                                },
                                   child: Container(
                                     // audiobuttonVju (20:323)
                                     padding: EdgeInsets.fromLTRB(21 * fem, 17 * fem, 45 * fem, 18 * fem),
@@ -342,7 +358,10 @@ class __AlikhlasState extends State<_AlikhlasState> {
                                     width: 20 * fem,
                                     height: 18 * fem,
                                     child: Image.asset(
-                                      'assets/page-1/images/soundmaxduotone.png',
+                                      isPlayingMap.containsKey('AYAT1.mp3') &&
+                                                  isPlayingMap['AYAT1.mp3']!
+                                              ? 'assets/page-1/images/soundmaxduotone.png'
+                                              : 'assets/page-1/images/soundmaxduotone.png',
                                       width: 20 * fem,
                                       height: 18 * fem,
                                     ),
@@ -352,7 +371,10 @@ class __AlikhlasState extends State<_AlikhlasState> {
                                     margin: EdgeInsets.fromLTRB(
                                         0 * fem, 1 * fem, 0 * fem, 0 * fem),
                                     child: Text(
-                                      'Audio',
+                                    isPlayingMap.containsKey('AYAT1.mp3') &&
+                                                  isPlayingMap['AYAT1.mp3']!
+                                              ? 'Stop'
+                                              : 'Audio',
                                       style: TextStyle(
                                         fontFamily: 'Roboto',
                                         fontSize: 14 * ffem,
@@ -385,7 +407,7 @@ class __AlikhlasState extends State<_AlikhlasState> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
                             // Jika sedang loading, tampilkan widget loading
-                            return const CircularProgressIndicator();
+                            return Container();
                           } else if (snapshot.hasError) {
                             // Jika terjadi error, tampilkan pesan error
                             return Text('Error: ${snapshot.error}');
@@ -416,7 +438,7 @@ class __AlikhlasState extends State<_AlikhlasState> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             // Jika sedang loading, tampilkan widget loading
-                            return const CircularProgressIndicator();
+                            return Container();
                           } else if (snapshot.hasError) {
                             // Jika terjadi error, tampilkan pesan error
                             return Text('Error: ${snapshot.error}');
@@ -493,12 +515,8 @@ class __AlikhlasState extends State<_AlikhlasState> {
                                 height: double.infinity,
                                 child: GestureDetector(
                                   onTap: () {
-                                    if (!isPlaying) {
-                                      playAudio(audioPaths[1]); // Memutar audio ayat pertama ketika tombol ditekan
-                                    } else {
-                                      audioPlayer.stop(); // Menghentikan audio ketika tombol ditekan saat sedang diputar
-                                    }
-                                  },
+                                  playAudio('AYAT2.mp3');
+                                },
                                   child: Container(
                                     // audiobuttonVju (20:323)
                                     padding: EdgeInsets.fromLTRB(21 * fem, 17 * fem, 45 * fem, 18 * fem),
@@ -518,7 +536,10 @@ class __AlikhlasState extends State<_AlikhlasState> {
                                     width: 20 * fem,
                                     height: 18 * fem,
                                     child: Image.asset(
-                                      'assets/page-1/images/soundmaxduotone.png',
+                                      isPlayingMap.containsKey('AYAT2.mp3') &&
+                                                  isPlayingMap['AYAT2.mp3']!
+                                              ? 'assets/page-1/images/soundmaxduotone.png'
+                                              : 'assets/page-1/images/soundmaxduotone.png',
                                       width: 20 * fem,
                                       height: 18 * fem,
                                     ),
@@ -528,7 +549,10 @@ class __AlikhlasState extends State<_AlikhlasState> {
                                     margin: EdgeInsets.fromLTRB(
                                         0 * fem, 1 * fem, 0 * fem, 0 * fem),
                                     child: Text(
-                                      'Audio',
+                                    isPlayingMap.containsKey('AYAT2.mp3') &&
+                                                  isPlayingMap['AYAT2.mp3']!
+                                              ? 'Stop'
+                                              : 'Audio',
                                       style: TextStyle(
                                         fontFamily: 'Roboto',
                                         fontSize: 14 * ffem,
@@ -564,7 +588,7 @@ class __AlikhlasState extends State<_AlikhlasState> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             // Jika sedang loading, tampilkan widget loading
-                            return const CircularProgressIndicator();
+                            return Container();
                           } else if (snapshot.hasError) {
                             // Jika terjadi error, tampilkan pesan error
                             return Text('Error: ${snapshot.error}');
@@ -595,7 +619,7 @@ class __AlikhlasState extends State<_AlikhlasState> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             // Jika sedang loading, tampilkan widget loading
-                            return const CircularProgressIndicator();
+                            return Container();
                           } else if (snapshot.hasError) {
                             // Jika terjadi error, tampilkan pesan error
                             return Text('Error: ${snapshot.error}');
@@ -670,12 +694,8 @@ class __AlikhlasState extends State<_AlikhlasState> {
                                 height: double.infinity,
                                 child: GestureDetector(
                                   onTap: () {
-                                    if (!isPlaying) {
-                                      playAudio(audioPaths[2]); // Memutar audio ayat pertama ketika tombol ditekan
-                                    } else {
-                                      audioPlayer.stop(); // Menghentikan audio ketika tombol ditekan saat sedang diputar
-                                    }
-                                  },
+                                  playAudio('AYAT3.mp3');
+                                },
                                   child: Container(
                                     // audiobuttonVju (20:323)
                                     padding: EdgeInsets.fromLTRB(21 * fem, 17 * fem, 45 * fem, 18 * fem),
@@ -694,7 +714,10 @@ class __AlikhlasState extends State<_AlikhlasState> {
                                           width: 20 * fem,
                                           height: 18 * fem,
                                           child: Image.asset(
-                                            'assets/page-1/images/soundmaxduotone.png',
+                                           isPlayingMap.containsKey('AYAT3.mp3') &&
+                                                  isPlayingMap['AYAT3.mp3']!
+                                              ? 'assets/page-1/images/soundmaxduotone.png'
+                                              : 'assets/page-1/images/soundmaxduotone.png',
                                             width: 20 * fem,
                                             height: 18 * fem,
                                           ),
@@ -704,7 +727,10 @@ class __AlikhlasState extends State<_AlikhlasState> {
                                         // audioKU3 (20:326)
                                         margin: EdgeInsets.fromLTRB(0 * fem, 1 * fem, 0 * fem, 0 * fem),
                                         child: Text(
-                                          'Audio',
+                                        isPlayingMap.containsKey('AYAT3.mp3') &&
+                                                  isPlayingMap['AYAT3.mp3']!
+                                              ? 'Stop'
+                                              : 'Audio',
                                           style: GoogleFonts.roboto(
                                             fontSize: 14 * ffem,
                                             fontWeight: FontWeight.w700,
@@ -742,7 +768,7 @@ class __AlikhlasState extends State<_AlikhlasState> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             // Jika sedang loading, tampilkan widget loading
-                            return const CircularProgressIndicator();
+                            return Container();
                           } else if (snapshot.hasError) {
                             // Jika terjadi error, tampilkan pesan error
                             return Text('Error: ${snapshot.error}');
@@ -773,7 +799,7 @@ class __AlikhlasState extends State<_AlikhlasState> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             // Jika sedang loading, tampilkan widget loading
-                            return const CircularProgressIndicator();
+                            return Container();
                           } else if (snapshot.hasError) {
                             // Jika terjadi error, tampilkan pesan error
                             return Text('Error: ${snapshot.error}');
@@ -847,13 +873,9 @@ class __AlikhlasState extends State<_AlikhlasState> {
                                 width: 139 * fem,
                                 height: double.infinity,
                                 child: GestureDetector(
-                                   onTap: () {
-                                    if (!isPlaying) {
-                                      playAudio(audioPaths[3]); // Memutar audio ayat pertama ketika tombol ditekan
-                                    } else {
-                                      audioPlayer.stop(); // Menghentikan audio ketika tombol ditekan saat sedang diputar
-                                    }
-                                  },
+                                    onTap: () {
+                                  playAudio('AYAT4.mp3');
+                                },
                                   child: Container(
                                     // audiobuttonVju (20:323)
                                     padding: EdgeInsets.fromLTRB(21 * fem, 17 * fem, 45 * fem, 18 * fem),
@@ -872,7 +894,10 @@ class __AlikhlasState extends State<_AlikhlasState> {
                                           width: 20 * fem,
                                           height: 18 * fem,
                                           child: Image.asset(
-                                            'assets/page-1/images/soundmaxduotone.png',
+                                            isPlayingMap.containsKey('AYAT4.mp3') &&
+                                                  isPlayingMap['AYAT4.mp3']!
+                                              ? 'assets/page-1/images/soundmaxduotone.png'
+                                              : 'assets/page-1/images/soundmaxduotone.png',
                                             width: 20 * fem,
                                             height: 18 * fem,
                                           ),
@@ -881,7 +906,10 @@ class __AlikhlasState extends State<_AlikhlasState> {
                                         // audioKU3 (20:326)
                                         margin: EdgeInsets.fromLTRB(0 * fem, 1 * fem, 0 * fem, 0 * fem),
                                         child: Text(
-                                          'Audio',
+                                          isPlayingMap.containsKey('AYAT4.mp3') &&
+                                                  isPlayingMap['AYAT4.mp3']!
+                                              ? 'Stop'
+                                              : 'Audio',
                                           style: GoogleFonts.roboto(
                                             fontSize: 14 * ffem,
                                             fontWeight: FontWeight.w700,
@@ -912,7 +940,7 @@ class __AlikhlasState extends State<_AlikhlasState> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             // Jika sedang loading, tampilkan widget loading
-                            return const CircularProgressIndicator();
+                            return  Container();
                           } else if (snapshot.hasError) {
                             // Jika terjadi error, tampilkan pesan error
                             return Text('Error: ${snapshot.error}');

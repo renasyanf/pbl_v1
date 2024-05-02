@@ -41,6 +41,9 @@ dependencies:
   intl: ^0.17.0
   google_speech: ^4.4.0
   quran: ^1.2.4
+  flutter_spinkit: ^5.1.0
+  math_expressions: ^2.1.1
+  http: ^1.1.0
 
 
   path: any

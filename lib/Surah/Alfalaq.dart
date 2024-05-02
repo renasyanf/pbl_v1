@@ -25,7 +25,8 @@ class _AlfalaqState extends StatefulWidget {
 class __AlfalaqState extends State<_AlfalaqState> {
   late final AssetsAudioPlayer audioPlayer;
   late List<String> audioPaths;
-  bool isPlaying = false;
+  Map<String, bool> isPlayingMap = {};
+  String? currentPlayingAudioPath;
    
   // Function to get photos from database
   Future<List<String?>> getImagesFromDatabase(int idSurah) async {
@@ -43,37 +44,54 @@ class __AlfalaqState extends State<_AlfalaqState> {
     return imageList;
   } 
 
-  @override
+   @override
   void initState() {
     super.initState();
     audioPlayer = AssetsAudioPlayer.newPlayer();
     audioPaths = [
-      'assets/audio/alfalaq/AYAT1.mp3',
-      'assets/audio/alfalaq/AYAT2.mp3',
-      'assets/audio/alfalaq/AYAT3.mp3',
-      'assets/audio/alfalaq/AYAT4.mp3',
-      'assets/audio/alfalaq/AYAT5.mp3',
+      'AYAT1.mp3',
+      'AYAT2.mp3',
+      'AYAT3.mp3',
+      'AYAT4.mp3',
+      'AYAT5.mp3',
     ];
 
    audioPlayer.current.listen((event) {
       if (event != null && event.audio.assetAudioPath != null) {
         setState(() {
-          isPlaying = true;
+          isPlayingMap[currentPlayingAudioPath!] = true;
         });
       } else {
         setState(() {
-          isPlaying = false;
+          isPlayingMap[currentPlayingAudioPath!] = false;
         });
-        
       }
     });
   }
 
-  void playAudio(String path) async {
-    await audioPlayer.open(
-      Audio(path),
-      showNotification: true,
-    );
+  void playAudio(String audioPath) {
+    if (!isPlayingMap.containsKey(audioPath) || !isPlayingMap[audioPath]!) {
+      if (currentPlayingAudioPath != null &&
+          isPlayingMap.containsKey(currentPlayingAudioPath!) &&
+          isPlayingMap[currentPlayingAudioPath!]!) {
+        stopAudio(currentPlayingAudioPath!);
+      }
+      audioPlayer.open(Audio('assets/audio/alfalaq/$audioPath'));
+      setState(() {
+        currentPlayingAudioPath = audioPath;
+        isPlayingMap[currentPlayingAudioPath!] = true;
+      });
+    } else {
+      stopAudio(audioPath);
+    }
+  }
+
+  void stopAudio(String audioPath) {
+    audioPlayer.stop();
+    setState(() {
+      isPlayingMap[audioPath] = false;
+      currentPlayingAudioPath = null;
+    });
   }
 
   @override
@@ -89,126 +107,122 @@ class __AlfalaqState extends State<_AlfalaqState> {
     Future<List<String?>> imagesFromDatabase9 = getImagesFromDatabase(33);
     Future<List<String?>> imagesFromDatabase10 = getImagesFromDatabase(34);
 
-    double baseWidth = 852;
+        double baseWidth = 852;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
+    double appBarHeight = 100 * fem; // Sesuaikan tinggi SliverAppBar sesuai kebutuhan
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            color: Color(0xffffffff),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                // headerbarg8f (8:115)
-                width: double.infinity,
-                height: 100 * fem,
-                decoration: const BoxDecoration(
-                  color: Color(0xffffffff),
-                ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      // navheader1Aw (8:116)
-                      left: 29 * fem,
-                      top: 40 * fem,
-                      child: Align(
-                        child: SizedBox(
-                          width: 794 * fem,
-                          height: 52 * fem,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(11 * fem),
-                              color: const Color(0xffdbea8d),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0x0f000000),
-                                  offset: Offset(0 * fem, 2 * fem),
-                                  blurRadius: 2 * fem,
-                                ),
-                              ],
-                            ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+             automaticallyImplyLeading: false,
+             pinned: true,
+            //expandedHeight: appBarHeight,
+            flexibleSpace: Container(
+              // width: double.infinity,
+               height: 330 * fem,
+              decoration: BoxDecoration(
+                color: Color(0xffffffff),
+              ),
+              child: Stack(
+                children: [
+                  Positioned(
+                    left: 29 * fem,
+                    top: 28 * fem,
+                    child: Align(
+                      child: SizedBox(
+                        width: 794 * fem,
+                        height: 45 * fem,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(11 * fem),
+                            color: const Color(0xffdbea8d),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0x0f000000),
+                                offset: Offset(0 * fem, 2 * fem),
+                                blurRadius: 2 * fem,
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                    Positioned(
-                      // tahap1qsalfatihah1fmH (8:117)
-                      left: 85 * fem,
-                      top: 57 * fem,
-                      child: Align(
-                        child: SizedBox(
-                          width: 186 * fem,
-                          height: 20 * fem,
-                          child: Text(
-                            'Al - Falaq',
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: 16 * ffem,
-                              fontWeight: FontWeight.w700,
-                              height: 1.1918749809 * ffem / fem,
-                              color: const Color(0xff000000),
-                            ),
+                  ),
+                  Positioned(
+                    left: 85 * fem,
+                    top: 43 * fem,
+                    child: Align(
+                      child: SizedBox(
+                        width: 186 * fem,
+                        height: 25 * fem,
+                        child: Text(
+                          'Al Falaq',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16 * ffem,
+                            fontWeight: FontWeight.w700,
+                            height: 1.1918749809 * ffem / fem,
+                            color: const Color(0xff000000),
                           ),
                         ),
                       ),
                     ),
-                    Positioned(
-                      // moreZ5y (8:118)
-                      left: 801 * fem,
-                      top: 58 * fem,
-                      child: Align(
-                        child: SizedBox(
+                  ),
+                  Positioned(
+                    left: 801 * fem,
+                    top: 45 * fem,
+                    child: Align(
+                      child: SizedBox(
+                        width: 4 * fem,
+                        height: 13 * fem,
+                        child: Image.asset(
+                          'assets/page-1/images/more.png',
                           width: 4 * fem,
                           height: 16 * fem,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 47 * fem,
+                    top: 43 * fem,
+                    child: Align(
+                      child: SizedBox(
+                        width: 14 * fem,
+                        height: 14 * fem,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                          ),
                           child: Image.asset(
-                            'assets/page-1/images/more.png',
-                            width: 4 * fem,
-                            height: 16 * fem,
+                            'assets/page-1/images/back-9ks.png',
+                            width: 20 * fem,
+                            height: 20 * fem,
                           ),
                         ),
                       ),
                     ),
-                    Positioned(
-                      left: 47 * fem,
-                      top: 56 * fem,
-                      child: Align(
-                        child: SizedBox(
-                          width: 16 * fem,
-                          height: 16 * fem,
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.pop(context); // Tombol Kembali
-                            },
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                            ),
-                            child: Image.asset(
-                              'assets/page-1/images/back-9ks.png',
-                              width: 16 * fem,
-                              height: 16 * fem,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Container(
-                // autogroupsgpzyvP (56896Yzyh1G6wME5YUsGPZ)
-                padding:
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              color: Color(0xffffffff),
+              padding:
                     EdgeInsets.fromLTRB(90 * fem, 25 * fem, 16 * fem, 5 * fem),
                 width: double.infinity,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
-                      margin: EdgeInsets.fromLTRB(
-                          0 * fem, 0 * fem, 26 * fem, 10 * fem),
+                      margin: EdgeInsets.fromLTRB(0 * fem, 0 * fem, 26 * fem, 10 * fem),
                       width: 734 * fem,
                       height: 264 * fem,
                       child: FutureBuilder<List<String?>>(
@@ -216,7 +230,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
+                            return Container();
                           } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
                           } else {
@@ -242,12 +256,12 @@ class __AlfalaqState extends State<_AlfalaqState> {
                       height: 73 * fem,
                       child: FutureBuilder<List<String?>>(
                         future:
-                            imagesFromDatabase2, // Mengambil gambar dari database
+              imagesFromDatabase2, // Mengambil gambar dari database
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             // Jika sedang loading, tampilkan widget loading
-                            return const CircularProgressIndicator();
+                            return Container();
                           } else if (snapshot.hasError) {
                             // Jika terjadi error, tampilkan pesan error
                             return Text('Error: ${snapshot.error}');
@@ -327,13 +341,9 @@ class __AlfalaqState extends State<_AlfalaqState> {
                               width: 139 * fem,
                               height: double.infinity,
                               child: GestureDetector(
-                                onTap: () {
-                                    if (!isPlaying) {
-                                      playAudio(audioPaths[0]); // Memutar audio ayat pertama ketika tombol ditekan
-                                    } else {
-                                      audioPlayer.stop(); // Menghentikan audio ketika tombol ditekan saat sedang diputar
-                                    }
-                                  },
+                                 onTap: () {
+                                  playAudio('AYAT1.mp3');
+                                },
                                 child: Container(
                                   // audiobuttonVju (20:323)
                                   padding: EdgeInsets.fromLTRB(
@@ -356,7 +366,10 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                         width: 20 * fem,
                                         height: 18 * fem,
                                         child: Image.asset(
-                                          'assets/page-1/images/soundmaxduotone.png',
+                                        isPlayingMap.containsKey('AYAT1.mp3') &&
+                                                  isPlayingMap['AYAT1.mp3']!
+                                              ? 'assets/page-1/images/soundmaxduotone.png'
+                                              : 'assets/page-1/images/soundmaxduotone.png',
                                           width: 20 * fem,
                                           height: 18 * fem,
                                         ),
@@ -366,7 +379,10 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                         margin: EdgeInsets.fromLTRB(
                                             0 * fem, 1 * fem, 0 * fem, 0 * fem),
                                         child: Text(
-                                          'Audio',
+                                           isPlayingMap.containsKey('AYAT1.mp3') &&
+                                                  isPlayingMap['AYAT1.mp3']!
+                                              ? 'Stop'
+                                              : 'Audio',
                                           style: TextStyle(
                                             fontFamily: 'Roboto',
                                             fontSize: 14 * ffem,
@@ -382,7 +398,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
                               ),
                             ),
                           ]),
-                    ), //audio video btn end
+                    ), 
                     Container(
                       padding: EdgeInsets.fromLTRB(
                           0 * fem, 15 * fem, 16 * fem, 5 * fem),
@@ -403,7 +419,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
                                   // Jika sedang loading, tampilkan widget loading
-                                  return const CircularProgressIndicator();
+                                  return Container();
                                 } else if (snapshot.hasError) {
                                   // Jika terjadi error, tampilkan pesan error
                                   return Text('Error: ${snapshot.error}');
@@ -438,7 +454,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
                                   // Jika sedang loading, tampilkan widget loading
-                                  return const CircularProgressIndicator();
+                                  return Container();
                                 } else if (snapshot.hasError) {
                                   // Jika terjadi error, tampilkan pesan error
                                   return Text('Error: ${snapshot.error}');
@@ -520,13 +536,9 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                   width: 139 * fem,
                                   height: double.infinity,
                                   child: GestureDetector(
-                                    onTap: () {
-                                      if (!isPlaying) {
-                                      playAudio(audioPaths[1]); // Memutar audio ayat pertama ketika tombol ditekan
-                                    } else {
-                                      audioPlayer.stop(); // Menghentikan audio ketika tombol ditekan saat sedang diputar
-                                    }
-                                    },
+                                      onTap: () {
+                                  playAudio('AYAT2.mp3');
+                                },
                                     child: Container(
                                       // audiobuttonVju (20:323)
                                       padding: EdgeInsets.fromLTRB(21 * fem,
@@ -549,7 +561,10 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                             width: 20 * fem,
                                             height: 18 * fem,
                                             child: Image.asset(
-                                              'assets/page-1/images/soundmaxduotone.png',
+                                              isPlayingMap.containsKey('AYAT2.mp3') &&
+                                                  isPlayingMap['AYAT2.mp3']!
+                                              ? 'assets/page-1/images/soundmaxduotone.png'
+                                              : 'assets/page-1/images/soundmaxduotone.png',
                                               width: 20 * fem,
                                               height: 18 * fem,
                                             ),
@@ -559,7 +574,10 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                             margin: EdgeInsets.fromLTRB(0 * fem,
                                                 1 * fem, 0 * fem, 0 * fem),
                                             child: Text(
-                                              'Audio',
+                                                 isPlayingMap.containsKey('AYAT2.mp3') &&
+                                                  isPlayingMap['AYAT2.mp3']!
+                                              ? 'Stop'
+                                              : 'Audio',
                                               style: GoogleFonts.roboto(
                                                 fontSize: 14 * ffem,
                                                 fontWeight: FontWeight.w700,
@@ -579,8 +597,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
                           ),
                         ],
                       ),
-                    ),
-
+                    ),//audio video btn end
                     Container(
                       // autogroupsgpzyvP (56896Yzyh1G6wME5YUsGPZ)
                       padding: EdgeInsets.fromLTRB(
@@ -602,7 +619,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
                                   // Jika sedang loading, tampilkan widget loading
-                                  return const CircularProgressIndicator();
+                                  return Container();
                                 } else if (snapshot.hasError) {
                                   // Jika terjadi error, tampilkan pesan error
                                   return Text('Error: ${snapshot.error}');
@@ -637,7 +654,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
                                   // Jika sedang loading, tampilkan widget loading
-                                  return const CircularProgressIndicator();
+                                  return Container();
                                 } else if (snapshot.hasError) {
                                   // Jika terjadi error, tampilkan pesan error
                                   return Text('Error: ${snapshot.error}');
@@ -720,12 +737,8 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                   height: double.infinity,
                                   child: GestureDetector(
                                     onTap: () {
-                                    if (!isPlaying) {
-                                      playAudio(audioPaths[2]); // Memutar audio ayat pertama ketika tombol ditekan
-                                    } else {
-                                      audioPlayer.stop(); // Menghentikan audio ketika tombol ditekan saat sedang diputar
-                                    }
-                                  },
+                                  playAudio('AYAT3.mp3');
+                                },
                                     child: Container(
                                       // audiobuttonVju (20:323)
                                       padding: EdgeInsets.fromLTRB(21 * fem,
@@ -748,7 +761,10 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                             width: 20 * fem,
                                             height: 18 * fem,
                                             child: Image.asset(
-                                              'assets/page-1/images/soundmaxduotone.png',
+                                               isPlayingMap.containsKey('AYAT3.mp3') &&
+                                                  isPlayingMap['AYAT3.mp3']!
+                                              ? 'assets/page-1/images/soundmaxduotone.png'
+                                              : 'assets/page-1/images/soundmaxduotone.png',
                                               width: 20 * fem,
                                               height: 18 * fem,
                                             ),
@@ -758,7 +774,10 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                             margin: EdgeInsets.fromLTRB(0 * fem,
                                                 1 * fem, 0 * fem, 0 * fem),
                                             child: Text(
-                                              'Audio',
+                                              isPlayingMap.containsKey('AYAT3.mp3') &&
+                                                  isPlayingMap['AYAT3.mp3']!
+                                              ? 'Stop'
+                                              : 'Audio',
                                               style: GoogleFonts.roboto(
                                                 fontSize: 14 * ffem,
                                                 fontWeight: FontWeight.w700,
@@ -800,7 +819,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
                                   // Jika sedang loading, tampilkan widget loading
-                                  return const CircularProgressIndicator();
+                                  return Container();
                                 } else if (snapshot.hasError) {
                                   // Jika terjadi error, tampilkan pesan error
                                   return Text('Error: ${snapshot.error}');
@@ -835,7 +854,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
                                   // Jika sedang loading, tampilkan widget loading
-                                  return const CircularProgressIndicator();
+                                  return Container();
                                 } else if (snapshot.hasError) {
                                   // Jika terjadi error, tampilkan pesan error
                                   return Text('Error: ${snapshot.error}');
@@ -917,13 +936,9 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                   width: 139 * fem,
                                   height: double.infinity,
                                   child: GestureDetector(
-                                    onTap: () {
-                                    if (!isPlaying) {
-                                      playAudio(audioPaths[3]); // Memutar audio ayat pertama ketika tombol ditekan
-                                    } else {
-                                      audioPlayer.stop(); // Menghentikan audio ketika tombol ditekan saat sedang diputar
-                                    }
-                                  },
+                                      onTap: () {
+                                  playAudio('AYAT4.mp3');
+                                },
                                   child: Container(
                                       // audiobuttonVju (20:323)
                                       padding: EdgeInsets.fromLTRB(21 * fem,
@@ -946,7 +961,10 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                             width: 20 * fem,
                                             height: 18 * fem,
                                             child: Image.asset(
-                                              'assets/page-1/images/soundmaxduotone.png',
+                                              isPlayingMap.containsKey('AYAT4.mp3') &&
+                                                  isPlayingMap['AYAT4.mp3']!
+                                              ? 'assets/page-1/images/soundmaxduotone.png'
+                                              : 'assets/page-1/images/soundmaxduotone.png',
                                               width: 20 * fem,
                                               height: 18 * fem,
                                             ),
@@ -956,7 +974,10 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                             margin: EdgeInsets.fromLTRB(0 * fem,
                                                 1 * fem, 0 * fem, 0 * fem),
                                             child: Text(
-                                              'Audio',
+                                                 isPlayingMap.containsKey('AYAT4.mp3') &&
+                                                  isPlayingMap['AYAT4.mp3']!
+                                              ? 'Stop'
+                                              : 'Audio',
                                               style: GoogleFonts.roboto(
                                                 fontSize: 14 * ffem,
                                                 fontWeight: FontWeight.w700,
@@ -998,7 +1019,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
                                   // Jika sedang loading, tampilkan widget loading
-                                  return const CircularProgressIndicator();
+                                  return Container();
                                 } else if (snapshot.hasError) {
                                   // Jika terjadi error, tampilkan pesan error
                                   return Text('Error: ${snapshot.error}');
@@ -1033,7 +1054,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
                                   // Jika sedang loading, tampilkan widget loading
-                                  return const CircularProgressIndicator();
+                                  return Container();
                                 } else if (snapshot.hasError) {
                                   // Jika terjadi error, tampilkan pesan error
                                   return Text('Error: ${snapshot.error}');
@@ -1115,13 +1136,9 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                   width: 139 * fem,
                                   height: double.infinity,
                                   child: GestureDetector(
-                                     onTap: () {
-                                    if (!isPlaying) {
-                                      playAudio(audioPaths[4]); // Memutar audio ayat pertama ketika tombol ditekan
-                                    } else {
-                                      audioPlayer.stop(); // Menghentikan audio ketika tombol ditekan saat sedang diputar
-                                    }
-                                  },
+                                    onTap: () {
+                                  playAudio('AYAT5.mp3');
+                                },
                                   child: Container(
                                       // audiobuttonVju (20:323)
                                       padding: EdgeInsets.fromLTRB(21 * fem,
@@ -1144,7 +1161,10 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                             width: 20 * fem,
                                             height: 18 * fem,
                                             child: Image.asset(
-                                              'assets/page-1/images/soundmaxduotone.png',
+                                             isPlayingMap.containsKey('AYAT5.mp3') &&
+                                                  isPlayingMap['AYAT5.mp3']!
+                                              ? 'assets/page-1/images/soundmaxduotone.png'
+                                              : 'assets/page-1/images/soundmaxduotone.png',
                                               width: 20 * fem,
                                               height: 18 * fem,
                                             ),
@@ -1154,7 +1174,10 @@ class __AlfalaqState extends State<_AlfalaqState> {
                                             margin: EdgeInsets.fromLTRB(0 * fem,
                                                 1 * fem, 0 * fem, 0 * fem),
                                             child: Text(
-                                              'Audio',
+                                                isPlayingMap.containsKey('AYAT5.mp3') &&
+                                                  isPlayingMap['AYAT5.mp3']!
+                                              ? 'Stop'
+                                              : 'Audio',
                                               style: GoogleFonts.roboto(
                                                 fontSize: 14 * ffem,
                                                 fontWeight: FontWeight.w700,
@@ -1175,7 +1198,7 @@ class __AlfalaqState extends State<_AlfalaqState> {
                         ],
                       ),
                     ),
-
+                    
                     Container(
                       margin: EdgeInsets.fromLTRB(
                           0 * fem, 0 * fem, 60 * fem, 0 * fem),
@@ -1186,19 +1209,15 @@ class __AlfalaqState extends State<_AlfalaqState> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                  ],
-                ),
+                ],
               ),
-              
-            ],
+            ),
           ),
-        ),
+        ],
       ),
-    );
-  }
+    );}
   @override
   void dispose() {
     audioPlayer.dispose();
     super.dispose();
-  }
-}
+  }}

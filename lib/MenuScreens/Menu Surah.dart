@@ -7,7 +7,7 @@ import 'package:pbl_v1/Surah/Alfalaq.dart';
 import 'package:pbl_v1/Surah/Annaas.dart';
 import 'package:pbl_v1/Surah/Alikhlas.dart';
 import 'package:pbl_v1/Surah/Alfatihah.dart';
-import 'package:pbl_v1/Surah/Alfatihahdb.dart';
+//import 'package:pbl_v1/Surah/Alfatihahdb.dart';
 import 'dart:ui';
 
 class MenuSurah extends StatelessWidget {
