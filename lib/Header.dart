@@ -19,7 +19,7 @@ class Header extends SliverPersistentHeaderDelegate {
             child: Align(
               child: SizedBox(
                 width: 794 * fem,
-                height: 52 * fem,
+                height: 80 * fem,
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(11 * fem),
