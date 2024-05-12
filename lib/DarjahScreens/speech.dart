@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:highlight_text/highlight_text.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
-import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 
 void main() {
@@ -33,18 +32,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
   bool _isListening = false;
   String _text = 'Press the button and start speaking';
   double _confidence = 1.0;
-  String _recitationStatus = ''; // Adding a new variable for recitation status
-
-  final Map<String, HighlightedWord> _highlights = {
-    'flutter': HighlightedWord(
-      onTap: () => print('flutter'),
-      textStyle: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-    ),
-    'example': HighlightedWord(
-      onTap: () => print('example'),
-      textStyle: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-    ),
-  };
+  String _recitationStatus = '';
 
   @override
   void initState() {
@@ -74,10 +62,9 @@ class _SpeechScreenState extends State<SpeechScreen> {
           padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 150.0),
           child: Column(
             children: [
-              TextHighlight(
-                text: _text,
-                words: _highlights,
-                textStyle: TextStyle(
+              Text(
+                _text,
+                style: TextStyle(
                   fontSize: 24.0,
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
@@ -87,7 +74,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
               ),
               SizedBox(height: 20),
               Text(
-                _recitationStatus, // Display recitation status
+                _recitationStatus,
                 style: TextStyle(
                   fontSize: 18.0,
                   color: _recitationStatus.contains('Correct') ? Colors.green : Colors.red,
@@ -110,7 +97,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
       if (available) {
         setState(() {
           _isListening = true;
-          _recitationStatus = ''; // Clear previous status when starting to listen
+          _recitationStatus = '';
         });
         _speech.listen(
           onResult: (val) async {
@@ -120,13 +107,12 @@ class _SpeechScreenState extends State<SpeechScreen> {
                 _confidence = val.confidence;
               }
             });
-            String quranText = await fetchQuranText();
-            bool isCorrect = rabinKarp(_text, quranText);
+            String correctedText = await correctText(_text);
             setState(() {
-              _recitationStatus = isCorrect ? 'Correct Reading' : 'Incorrect Reading';
+              _recitationStatus = _text == correctedText ? 'Correct Reading' : 'Incorrect Reading';
             });
           },
-          localeId: 'ar', // Use Arabic locale
+          localeId: 'ar',
         );
       }
     } else {
@@ -137,49 +123,34 @@ class _SpeechScreenState extends State<SpeechScreen> {
     }
   }
 
-  Future<String> fetchQuranText() async {
-    var url = Uri.parse('http://api.alquran.cloud/v1/quran/en.asad');
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      return data['data']['surahs'][0]['ayahs'][0]['text']; // Simplification: returning first verse
-    } else {
-      throw Exception('Failed to load Quran text');
+  Future<String> correctText(String text) async {
+    List<String> verses = await fetchQuranText();
+    String correctedText = text;
+    for (String verse in verses) {
+      if (text.contains(verse)) {
+        correctedText = text.replaceAll(verse, '');
+        break;
+      }
     }
+    return correctedText;
   }
 
-  bool rabinKarp(String pattern, String text) {
-    int prime = 101; // A prime number
-    int m = pattern.length;
-    int n = text.length;
-    int i, j;
-    int patternHash = 0;
-    int textHash = 0;
-    int h = 1;
+  Future<List<String>> fetchQuranText() async {
+    try {
+      String data = await rootBundle.loadString('assets/data.json');
+      Map<String, dynamic> surahs = jsonDecode(data);
+      List<String> allVerses = [];
 
-    for (i = 0; i < m - 1; i++)
-      h = (h * 256) % prime;
+      surahs.forEach((surahKey, surahValue) {
+        surahValue.forEach((ayahKey, ayahValue) {
+          allVerses.add(ayahValue['text']);
+        });
+      });
 
-    for (i = 0; i < m; i++) {
-      patternHash = (256 * patternHash + pattern.codeUnitAt(i)) % prime;
-      textHash = (256 * textHash + text.codeUnitAt(i)) % prime;
+      return allVerses;
+    } catch (e) {
+      print('Error loading Quranic verses: $e');
+      return [];
     }
-
-    for (i = 0; i <= n - m; i++) {
-      if (patternHash == textHash) {
-        for (j = 0; j < m; j++) {
-          if (text[i + j] != pattern[j])
-            break;
-        }
-        if (j == m)
-          return true;
-      }
-      if (i < n - m) {
-        textHash = (256 * (textHash - text.codeUnitAt(i) * h) + text.codeUnitAt(i + m)) % prime;
-        if (textHash < 0)
-          textHash = (textHash + prime);
-      }
-    }
-    return false;
   }
 }

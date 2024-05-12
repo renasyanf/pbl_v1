@@ -275,7 +275,7 @@ class MenuSurah extends StatelessWidget {
             child: child,
           );
         },
-        pageBuilder: (context, _, __) => const Tajwid1Screen(),
+        pageBuilder: (context, _, __) =>  QuranPage(),
       ),
     );
   }
